@@ -1,27 +1,17 @@
-class Response {
-  List<Movie> results;
-  int page;
-  int totalResults;
-  Dates dates;
-  int totalPages;
+class Movies {
+  List<Movie> movies = List();
 
-  Response({
-    this.results,
-    this.page,
-    this.totalResults,
-    this.dates,
-    this.totalPages,
-  });
-}
+  Movies();
 
-class Dates {
-  String maximum;
-  String minimum;
+  Movies.fromJsonList(List<dynamic> jsonlist) {
+    if (jsonlist == null) return;
 
-  Dates({
-    this.maximum,
-    this.minimum,
-  });
+    for (var item in jsonlist) {
+      final movie = Movie.fromJson(item);
+      movies.add(movie);
+    }
+  }
+
 }
 
 class Movie {
@@ -32,9 +22,9 @@ class Movie {
   int id;
   bool adult;
   String backdropPath;
-  OriginalLanguage originalLanguage;
+  String originalLanguage;
   String originalTitle;
-  List<int> genreIds;
+  List genreIds;
   String title;
   double voteAverage;
   String overview;
@@ -61,7 +51,7 @@ class Movie {
     voteCount = json['vote_count'];
     popularity = json['popularity'];
     video = json['video'];
-    posterPath = json['paster_path'];
+    posterPath = json['poster_path'];
     id = json['id'];
     adult = json['adult'];
     backdropPath = json['backdrop_path'];
@@ -69,10 +59,17 @@ class Movie {
     originalTitle = json['original_title'];
     genreIds = json['genre_ids'];
     title = json['title'];
-    voteAverage = json['vote_average'];
+    voteAverage = json['vote_average'] / 1.0;
     overview = json['overview'];
     releaseDate = json['release_date'];
   }
+
+  String getImagePath(){
+    if (posterPath != null) {
+      return 'https://image.tmdb.org/t/p/w500$posterPath';
+    } else {
+      return 'http://www.casadei.com/on/demandware.static/Sites-casadei-Site/-/default/dw4b2b381d/images/noimagezoom.png';
+    }
+  }
 }
 
-enum OriginalLanguage { EN, JA, KO }
