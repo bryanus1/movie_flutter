@@ -18,14 +18,19 @@ class ListCard extends StatelessWidget {
         itemBuilder: (BuildContext context, int index){
           return Container(
             margin: EdgeInsets.symmetric(horizontal: 10.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8.0),
-              child: FadeInImage(
-                fit: BoxFit.cover,
-                placeholder: AssetImage('lib/assets/img/no-image.jpg'),
-                image: NetworkImage(images[index].getImagePath()),
-                height: 160.0,
-              ),
+            child: Column(
+              children: <Widget>[
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8.0),
+                  child: FadeInImage(
+                    fit: BoxFit.cover,
+                    placeholder: AssetImage('lib/assets/img/no-image.jpg'),
+                    image: NetworkImage(images[index].getImagePath()),
+                    height: 160.0,
+                  ),
+                ),
+                Text(images[index].title)
+              ],
             ),
           );
         },
