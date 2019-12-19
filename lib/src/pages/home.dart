@@ -14,12 +14,19 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   MoviesProvider moviesProvider = MoviesProvider();
+  
   @override
   Widget build(BuildContext context) {
+    moviesProvider.getPopulars();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Resources.blueColor,
-        title: Text("Movie Flutter"),
+        title: Text(
+          "Movie Flutter",
+          style: TextStyle(
+            fontSize: 25.0
+          )
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
@@ -99,46 +106,25 @@ class _HomeState extends State<Home> {
                   color: Resources.blueColor
                 ),
               ),
-              FutureBuilder(
-                future: moviesProvider.getPopulars(),
+              StreamBuilder(
+                stream: moviesProvider.popularStream,
                 builder: (BuildContext context, AsyncSnapshot snapshot){
-
                   final _size = MediaQuery.of(context).size;
 
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.none:
-                      return Container(
-                        height: _size.height * 0.25,
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            valueColor: new AlwaysStoppedAnimation<Color>(Resources.blueColor)
-                          ),
+                  if(snapshot.hasData){
+                    return ListCard(
+                      movies: snapshot.data,
+                      loadMovies: moviesProvider.getPopulars,
+                    );
+                  } else {
+                    return Container(
+                      height: _size.height * 0.25,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          valueColor: new AlwaysStoppedAnimation<Color>(Resources.blueColor)
                         ),
-                      );
-                    case ConnectionState.active:
-                      return Container(
-                        height: _size.height * 0.25,
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            valueColor: new AlwaysStoppedAnimation<Color>(Resources.blueColor)
-                          ),
-                        ),
-                      );
-                    case ConnectionState.waiting:
-                      return Container(
-                        height: _size.height * 0.25,
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            valueColor: new AlwaysStoppedAnimation<Color>(Resources.blueColor)
-                          ),
-                        ),
-                      );
-                    case ConnectionState.done:
-                      if (snapshot.hasError)
-                        return Text('Error: ${snapshot.error}');
-                      return ListCard(images: snapshot.data,);
-                    default:
-                      return Container();
+                      ),
+                    );
                   }
                 }
               )

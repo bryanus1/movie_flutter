@@ -49,7 +49,7 @@ class Movie {
 
   Movie.fromJson(Map<String, dynamic> json){
     voteCount = json['vote_count'];
-    popularity = json['popularity'];
+    popularity = json['popularity'] / 1.0;
     video = json['video'];
     posterPath = json['poster_path'];
     id = json['id'];
@@ -67,6 +67,14 @@ class Movie {
   String getImagePath(){
     if (posterPath != null) {
       return 'https://image.tmdb.org/t/p/w500$posterPath';
+    } else {
+      return 'http://www.casadei.com/on/demandware.static/Sites-casadei-Site/-/default/dw4b2b381d/images/noimagezoom.png';
+    }
+  }
+
+  String getBackgroundImage(){
+    if (posterPath != null) {
+      return 'https://image.tmdb.org/t/p/w500$backdropPath';
     } else {
       return 'http://www.casadei.com/on/demandware.static/Sites-casadei-Site/-/default/dw4b2b381d/images/noimagezoom.png';
     }
