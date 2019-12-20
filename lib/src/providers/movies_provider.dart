@@ -23,11 +23,12 @@ class MoviesProvider {
     _popularStreamController?.close();
   }
 
-  Future _processData({String endpoint, int page = 1, bool cast = false}) async {
+  Future _processData({String endpoint, int page = 1, bool cast = false, String query = ''}) async {
     final url = Uri.https(_url, endpoint, {
       'api_key': _apiKey,
       'language': _language,
-      'page': page.toString()
+      'page': page.toString(),
+      'query': query
     });
 
     http.Response response = await http.get(url);
@@ -41,6 +42,7 @@ class MoviesProvider {
   }
 
   Future<List<Movie>> getNowPlaying() async => await _processData(endpoint: '3/movie/now_playing');
+  Future<List<Movie>> searchMovies(String query) async => await _processData(endpoint: '3/search/movie', query: query);
   Future<List<Actor>> getActors(String movieId) async => await _processData(endpoint: '3/movie/$movieId/credits', cast: true);
   Future<List<Movie>> getPopulars() async {
     if (_cargando) return [];

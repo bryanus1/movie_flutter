@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_flutter/src/providers/movies_provider.dart';
 import 'package:movie_flutter/src/resources/resources.dart';
+import 'package:movie_flutter/src/search/data_search.dart';
 import 'package:movie_flutter/src/widgets/card_swiper.dart';
 import 'package:movie_flutter/src/widgets/list_card.dart';
 
@@ -30,7 +31,9 @@ class _HomeState extends State<Home> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
-            onPressed: () => moviesProvider.getNowPlaying(),
+            onPressed: (){
+              showSearch(context: context, delegate: DataSearch());
+            },
           )
         ],
       ),

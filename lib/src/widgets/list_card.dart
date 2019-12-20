@@ -25,19 +25,26 @@ class ListCard extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemCount: movies.length,
         itemBuilder: (BuildContext context, int index){
+
+        movies[index].uniqueId = '${movies[index].id}-popular';
+
+
           return GestureDetector(
             onTap: () => Navigator.pushNamed(context, 'detail', arguments: movies[index]),
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 10.0),
               child: Column(
                 children: <Widget>[
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: FadeInImage(
-                      fit: BoxFit.cover,
-                      placeholder: AssetImage('lib/assets/img/no-image.jpg'),
-                      image: NetworkImage(movies[index].getImagePath()),
-                      height: 160.0,
+                  Hero(
+                    tag: movies[index].uniqueId,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: FadeInImage(
+                        fit: BoxFit.cover,
+                        placeholder: AssetImage('lib/assets/img/no-image.jpg'),
+                        image: NetworkImage(movies[index].getImagePath()),
+                        height: 160.0,
+                      ),
                     ),
                   ),
                   Text(
